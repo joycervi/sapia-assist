@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 type Props = ComponentProps<"input"> & {
   label: string;
   icon: ElementType;
-  error?: string;
+  error?: string | undefined;
   id: string;
 };
 

@@ -27,7 +27,9 @@ export const Route = createFileRoute("/cadastro")({
 
 type Errors = Partial<Record<"nome" | "email" | "senha" | "confirmar", string>>;
 
-function validate(values: Record<string, string>): Errors {
+type Values = { nome: string; email: string; senha: string; confirmar: string };
+
+function validate(values: Values): Errors {
   const errors: Errors = {};
   const nome = values.nome.trim();
   if (nome.length < 3 || nome.length > 100) {
@@ -59,14 +61,14 @@ function CadastroPage() {
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [success, setSuccess] = useState(false);
 
-  const update = (key: string, value: string) => {
+  const update = (key: keyof Values, value: string) => {
     const next = { ...values, [key]: value };
     setValues(next);
     if (touched[key] || Object.keys(errors).length) setErrors(validate(next));
     setSuccess(false);
   };
 
-  const onBlur = (key: string) => {
+  const onBlur = (key: keyof Values) => {
     setTouched((t) => ({ ...t, [key]: true }));
     setErrors(validate(values));
   };
