@@ -10,33 +10,102 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CadastroRouteImport } from './routes/cadastro'
+import { Route as EnviarArquivosRouteImport } from './routes/enviar-arquivos'
+import { Route as EsqueciASenhaRouteImport } from './routes/esqueci-a-senha'
+import { Route as HistoricoRouteImport } from './routes/historico'
+import { Route as LoginRouteImport } from './routes/login'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CadastroRoute = CadastroRouteImport.update({
+  id: '/cadastro',
+  path: '/cadastro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnviarArquivosRoute = EnviarArquivosRouteImport.update({
+  id: '/enviar-arquivos',
+  path: '/enviar-arquivos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EsqueciASenhaRoute = EsqueciASenhaRouteImport.update({
+  id: '/esqueci-a-senha',
+  path: '/esqueci-a-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoricoRoute = HistoricoRouteImport.update({
+  id: '/historico',
+  path: '/historico',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cadastro': typeof CadastroRoute
+  '/enviar-arquivos': typeof EnviarArquivosRoute
+  '/esqueci-a-senha': typeof EsqueciASenhaRoute
+  '/historico': typeof HistoricoRoute
+  '/login': typeof LoginRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cadastro': typeof CadastroRoute
+  '/enviar-arquivos': typeof EnviarArquivosRoute
+  '/esqueci-a-senha': typeof EsqueciASenhaRoute
+  '/historico': typeof HistoricoRoute
+  '/login': typeof LoginRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cadastro': typeof CadastroRoute
+  '/enviar-arquivos': typeof EnviarArquivosRoute
+  '/esqueci-a-senha': typeof EsqueciASenhaRoute
+  '/historico': typeof HistoricoRoute
+  '/login': typeof LoginRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/cadastro'
+    | '/enviar-arquivos'
+    | '/esqueci-a-senha'
+    | '/historico'
+    | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/cadastro'
+    | '/enviar-arquivos'
+    | '/esqueci-a-senha'
+    | '/historico'
+    | '/login'
+  id:
+    | '__root__'
+    | '/'
+    | '/cadastro'
+    | '/enviar-arquivos'
+    | '/esqueci-a-senha'
+    | '/historico'
+    | '/login'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CadastroRoute: typeof CadastroRoute
+  EnviarArquivosRoute: typeof EnviarArquivosRoute
+  EsqueciASenhaRoute: typeof EsqueciASenhaRoute
+  HistoricoRoute: typeof HistoricoRoute
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +117,52 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cadastro': {
+      id: '/cadastro'
+      path: '/cadastro'
+      fullPath: '/cadastro'
+      preLoaderRoute: typeof CadastroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/enviar-arquivos': {
+      id: '/enviar-arquivos'
+      path: '/enviar-arquivos'
+      fullPath: '/enviar-arquivos'
+      preLoaderRoute: typeof EnviarArquivosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/esqueci-a-senha': {
+      id: '/esqueci-a-senha'
+      path: '/esqueci-a-senha'
+      fullPath: '/esqueci-a-senha'
+      preLoaderRoute: typeof EsqueciASenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/historico': {
+      id: '/historico'
+      path: '/historico'
+      fullPath: '/historico'
+      preLoaderRoute: typeof HistoricoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CadastroRoute: CadastroRoute,
+  EnviarArquivosRoute: EnviarArquivosRoute,
+  EsqueciASenhaRoute: EsqueciASenhaRoute,
+  HistoricoRoute: HistoricoRoute,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
