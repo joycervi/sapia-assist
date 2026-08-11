@@ -1,10 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Mail } from "lucide-react";
+import { toast } from "sonner";
 import { Navbar } from "@/components/Navbar";
 import { AuthCard } from "@/components/AuthCard";
 import { FormField } from "@/components/FormField";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { MSG, emailRegex, mapAuthError } from "@/lib/auth-messages";
 
 export const Route = createFileRoute("/esqueci-a-senha")({
   head: () => ({
@@ -28,6 +31,30 @@ function EsqueciSenha() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | undefined>(undefined);
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const valid = emailRegex.test(email.trim());
+    setError(valid ? undefined : "Informe um e-mail válido.");
+    if (!valid) {
+      toast.error(MSG.campos_invalidos);
+      return;
+    }
+
+    setLoading(true);
+    const { error: err } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/redefinir-senha`,
+    });
+    setLoading(false);
+
+    if (err) {
+      toast.error(mapAuthError(err.message));
+      return;
+    }
+    setSent(true);
+    toast.success(MSG.email_enviado);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -36,22 +63,14 @@ function EsqueciSenha() {
         title="Esqueci a senha"
         subtitle="Informe seu e-mail para receber as instruções de recuperação."
       >
-        <form
-          noValidate
-          className="space-y-5"
-          onSubmit={(e) => {
-            e.preventDefault();
-            const valid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
-            setError(valid ? undefined : "Informe um e-mail válido.");
-            setSent(valid);
-          }}
-        >
+        <form noValidate className="space-y-5" onSubmit={onSubmit}>
           <FormField
             id="email"
             label="E-mail"
             icon={Mail}
             type="email"
             placeholder="E-mail"
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             error={error}
@@ -61,8 +80,8 @@ function EsqueciSenha() {
               Se este e-mail estiver cadastrado, enviaremos as instruções em instantes.
             </p>
           ) : null}
-          <Button type="submit" className="h-11 w-full rounded-lg shadow-sm">
-            Enviar instruções
+          <Button type="submit" disabled={loading} className="h-11 w-full rounded-lg shadow-sm">
+            {loading ? "Enviando..." : "Enviar instruções"}
           </Button>
           <p className="text-center text-sm text-muted-foreground">
             <Link to="/login" className="font-semibold text-primary hover:underline">
