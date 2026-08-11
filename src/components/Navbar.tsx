@@ -2,13 +2,13 @@ import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 
 const navLinkClass =
-  "text-sm font-medium text-foreground/70 transition-colors hover:text-primary";
+  "text-sm font-medium text-white/70 transition-colors hover:text-white";
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/70 bg-background/85 backdrop-blur">
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-navy backdrop-blur">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link to="/" className="text-xl font-bold tracking-[0.18em] text-foreground">
+        <Link to="/" className="text-xl font-bold tracking-[0.18em] text-white">
           SAPIA
         </Link>
 
@@ -16,14 +16,14 @@ export function Navbar() {
           <Link
             to="/enviar-arquivos"
             className={navLinkClass}
-            activeProps={{ className: "text-primary" }}
+            activeProps={{ className: "text-white" }}
           >
             Enviar arquivos
           </Link>
           <Link
             to="/historico"
             className={navLinkClass}
-            activeProps={{ className: "text-primary" }}
+            activeProps={{ className: "text-white" }}
           >
             Histórico de Arquivos
           </Link>
@@ -32,7 +32,7 @@ export function Navbar() {
         <div className="flex items-center gap-3 sm:gap-4">
           <Link
             to="/cadastro"
-            className="text-sm font-semibold text-primary underline-offset-4 hover:underline"
+            className="text-sm font-semibold text-white underline-offset-4 hover:underline"
             activeProps={{ className: "underline" }}
           >
             Cadastre-se
