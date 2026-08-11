@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { FileUp } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 
-export const Route = createFileRoute("/enviar-arquivos")({
+export const Route = createFileRoute("/_authenticated/enviar-arquivos")({
   head: () => ({
     meta: [
       { title: "Enviar arquivos | SAPIA" },

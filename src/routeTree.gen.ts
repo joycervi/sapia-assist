@@ -10,15 +10,21 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as CadastroRouteImport } from './routes/cadastro'
-import { Route as EnviarArquivosRouteImport } from './routes/enviar-arquivos'
 import { Route as EsqueciASenhaRouteImport } from './routes/esqueci-a-senha'
-import { Route as HistoricoRouteImport } from './routes/historico'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
+import { Route as AuthenticatedEnviarArquivosRouteImport } from './routes/_authenticated/enviar-arquivos'
+import { Route as AuthenticatedHistoricoRouteImport } from './routes/_authenticated/historico'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CadastroRoute = CadastroRouteImport.update({
@@ -26,19 +32,9 @@ const CadastroRoute = CadastroRouteImport.update({
   path: '/cadastro',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EnviarArquivosRoute = EnviarArquivosRouteImport.update({
-  id: '/enviar-arquivos',
-  path: '/enviar-arquivos',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const EsqueciASenhaRoute = EsqueciASenhaRouteImport.update({
   id: '/esqueci-a-senha',
   path: '/esqueci-a-senha',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HistoricoRoute = HistoricoRouteImport.update({
-  id: '/historico',
-  path: '/historico',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -46,66 +42,90 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
+  id: '/redefinir-senha',
+  path: '/redefinir-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedEnviarArquivosRoute =
+  AuthenticatedEnviarArquivosRouteImport.update({
+    id: '/enviar-arquivos',
+    path: '/enviar-arquivos',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedHistoricoRoute = AuthenticatedHistoricoRouteImport.update({
+  id: '/historico',
+  path: '/historico',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
-  '/enviar-arquivos': typeof EnviarArquivosRoute
   '/esqueci-a-senha': typeof EsqueciASenhaRoute
-  '/historico': typeof HistoricoRoute
   '/login': typeof LoginRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
+  '/enviar-arquivos': typeof AuthenticatedEnviarArquivosRoute
+  '/historico': typeof AuthenticatedHistoricoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
-  '/enviar-arquivos': typeof EnviarArquivosRoute
   '/esqueci-a-senha': typeof EsqueciASenhaRoute
-  '/historico': typeof HistoricoRoute
   '/login': typeof LoginRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
+  '/enviar-arquivos': typeof AuthenticatedEnviarArquivosRoute
+  '/historico': typeof AuthenticatedHistoricoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/cadastro': typeof CadastroRoute
-  '/enviar-arquivos': typeof EnviarArquivosRoute
   '/esqueci-a-senha': typeof EsqueciASenhaRoute
-  '/historico': typeof HistoricoRoute
   '/login': typeof LoginRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
+  '/_authenticated/enviar-arquivos': typeof AuthenticatedEnviarArquivosRoute
+  '/_authenticated/historico': typeof AuthenticatedHistoricoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/cadastro'
-    | '/enviar-arquivos'
     | '/esqueci-a-senha'
-    | '/historico'
     | '/login'
+    | '/redefinir-senha'
+    | '/enviar-arquivos'
+    | '/historico'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/cadastro'
-    | '/enviar-arquivos'
     | '/esqueci-a-senha'
-    | '/historico'
     | '/login'
+    | '/redefinir-senha'
+    | '/enviar-arquivos'
+    | '/historico'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/cadastro'
-    | '/enviar-arquivos'
     | '/esqueci-a-senha'
-    | '/historico'
     | '/login'
+    | '/redefinir-senha'
+    | '/_authenticated/enviar-arquivos'
+    | '/_authenticated/historico'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   CadastroRoute: typeof CadastroRoute
-  EnviarArquivosRoute: typeof EnviarArquivosRoute
   EsqueciASenhaRoute: typeof EsqueciASenhaRoute
-  HistoricoRoute: typeof HistoricoRoute
   LoginRoute: typeof LoginRoute
+  RedefinirSenhaRoute: typeof RedefinirSenhaRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -117,18 +137,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cadastro': {
       id: '/cadastro'
       path: '/cadastro'
       fullPath: '/cadastro'
       preLoaderRoute: typeof CadastroRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/enviar-arquivos': {
-      id: '/enviar-arquivos'
-      path: '/enviar-arquivos'
-      fullPath: '/enviar-arquivos'
-      preLoaderRoute: typeof EnviarArquivosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/esqueci-a-senha': {
@@ -138,13 +158,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EsqueciASenhaRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/historico': {
-      id: '/historico'
-      path: '/historico'
-      fullPath: '/historico'
-      preLoaderRoute: typeof HistoricoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -152,16 +165,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/redefinir-senha': {
+      id: '/redefinir-senha'
+      path: '/redefinir-senha'
+      fullPath: '/redefinir-senha'
+      preLoaderRoute: typeof RedefinirSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/enviar-arquivos': {
+      id: '/_authenticated/enviar-arquivos'
+      path: '/enviar-arquivos'
+      fullPath: '/enviar-arquivos'
+      preLoaderRoute: typeof AuthenticatedEnviarArquivosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/historico': {
+      id: '/_authenticated/historico'
+      path: '/historico'
+      fullPath: '/historico'
+      preLoaderRoute: typeof AuthenticatedHistoricoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedEnviarArquivosRoute: typeof AuthenticatedEnviarArquivosRoute
+  AuthenticatedHistoricoRoute: typeof AuthenticatedHistoricoRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedEnviarArquivosRoute: AuthenticatedEnviarArquivosRoute,
+  AuthenticatedHistoricoRoute: AuthenticatedHistoricoRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   CadastroRoute: CadastroRoute,
-  EnviarArquivosRoute: EnviarArquivosRoute,
   EsqueciASenhaRoute: EsqueciASenhaRoute,
-  HistoricoRoute: HistoricoRoute,
   LoginRoute: LoginRoute,
+  RedefinirSenhaRoute: RedefinirSenhaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

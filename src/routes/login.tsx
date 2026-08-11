@@ -1,10 +1,13 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Mail, Lock } from "lucide-react";
+import { toast } from "sonner";
 import { Navbar } from "@/components/Navbar";
 import { AuthCard } from "@/components/AuthCard";
 import { FormField } from "@/components/FormField";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { MSG, emailRegex, mapAuthError } from "@/lib/auth-messages";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -25,17 +28,36 @@ export const Route = createFileRoute("/login")({
 });
 
 function LoginPage() {
+  const navigate = useNavigate();
   const [values, setValues] = useState({ email: "", senha: "" });
   const [errors, setErrors] = useState<{ email?: string; senha?: string }>({});
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const next: { email?: string; senha?: string } = {};
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(values.email.trim())) {
-      next.email = "Informe um e-mail válido.";
-    }
+    if (!emailRegex.test(values.email.trim())) next.email = "Informe um e-mail válido.";
     if (!values.senha) next.senha = "Informe sua senha.";
     setErrors(next);
+    if (Object.keys(next).length) {
+      toast.error(MSG.campos_invalidos);
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: values.email.trim(),
+      password: values.senha,
+    });
+    setLoading(false);
+
+    if (error) {
+      toast.error(mapAuthError(error.message));
+      return;
+    }
+
+    toast.success("Login realizado com sucesso!");
+    navigate({ to: "/enviar-arquivos" });
   };
 
   return (
@@ -49,6 +71,7 @@ function LoginPage() {
             icon={Mail}
             type="email"
             placeholder="E-mail"
+            autoComplete="email"
             value={values.email}
             onChange={(e) => setValues({ ...values, email: e.target.value })}
             error={errors.email}
@@ -59,6 +82,7 @@ function LoginPage() {
             icon={Lock}
             type="password"
             placeholder="Senha"
+            autoComplete="current-password"
             value={values.senha}
             onChange={(e) => setValues({ ...values, senha: e.target.value })}
             error={errors.senha}
@@ -73,8 +97,8 @@ function LoginPage() {
             </Link>
           </div>
 
-          <Button type="submit" className="h-11 w-full rounded-lg shadow-sm">
-            Entrar
+          <Button type="submit" disabled={loading} className="h-11 w-full rounded-lg shadow-sm">
+            {loading ? "Entrando..." : "Entrar"}
           </Button>
 
           <p className="text-center text-sm text-muted-foreground">
