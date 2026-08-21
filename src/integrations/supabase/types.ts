@@ -14,7 +14,138 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      dado_extraido: {
+        Row: {
+          campo: string
+          confianca: number | null
+          id_dado_extraido: number
+          id_dados_extraidos: number
+          valor: string | null
+        }
+        Insert: {
+          campo: string
+          confianca?: number | null
+          id_dado_extraido?: number
+          id_dados_extraidos: number
+          valor?: string | null
+        }
+        Update: {
+          campo?: string
+          confianca?: number | null
+          id_dado_extraido?: number
+          id_dados_extraidos?: number
+          valor?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_dado_dados_extraidos"
+            columns: ["id_dados_extraidos"]
+            isOneToOne: false
+            referencedRelation: "dados_extraidos"
+            referencedColumns: ["id_dados_extraidos"]
+          },
+        ]
+      }
+      dados_extraidos: {
+        Row: {
+          beneficio_identificado: string | null
+          data_analise_ia: string | null
+          id_dados_extraidos: number
+          id_documento_inss: number
+          nivel_confianca: number | null
+        }
+        Insert: {
+          beneficio_identificado?: string | null
+          data_analise_ia?: string | null
+          id_dados_extraidos?: number
+          id_documento_inss: number
+          nivel_confianca?: number | null
+        }
+        Update: {
+          beneficio_identificado?: string | null
+          data_analise_ia?: string | null
+          id_dados_extraidos?: number
+          id_documento_inss?: number
+          nivel_confianca?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_dados_documento"
+            columns: ["id_documento_inss"]
+            isOneToOne: false
+            referencedRelation: "documento_inss"
+            referencedColumns: ["id_documento_inss"]
+          },
+        ]
+      }
+      documento_inss: {
+        Row: {
+          caminho_armazenamento: string
+          data_upload: string
+          id_documento_inss: number
+          id_usuario: string
+          nome_arquivo: string
+          status_upload: string
+          tamanho_bytes: number
+        }
+        Insert: {
+          caminho_armazenamento: string
+          data_upload?: string
+          id_documento_inss?: number
+          id_usuario: string
+          nome_arquivo: string
+          status_upload: string
+          tamanho_bytes: number
+        }
+        Update: {
+          caminho_armazenamento?: string
+          data_upload?: string
+          id_documento_inss?: number
+          id_usuario?: string
+          nome_arquivo?: string
+          status_upload?: string
+          tamanho_bytes?: number
+        }
+        Relationships: []
+      }
+      processamento_documento: {
+        Row: {
+          confianca_ocr: number | null
+          data_fim: string | null
+          data_inicio: string | null
+          id_documento_inss: number
+          id_processamento: number
+          mensagem_erro: string | null
+          status_processamento: string
+        }
+        Insert: {
+          confianca_ocr?: number | null
+          data_fim?: string | null
+          data_inicio?: string | null
+          id_documento_inss: number
+          id_processamento?: number
+          mensagem_erro?: string | null
+          status_processamento?: string
+        }
+        Update: {
+          confianca_ocr?: number | null
+          data_fim?: string | null
+          data_inicio?: string | null
+          id_documento_inss?: number
+          id_processamento?: number
+          mensagem_erro?: string | null
+          status_processamento?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_documento_inss"
+            columns: ["id_documento_inss"]
+            isOneToOne: true
+            referencedRelation: "documento_inss"
+            referencedColumns: ["id_documento_inss"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
