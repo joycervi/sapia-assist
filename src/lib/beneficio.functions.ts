@@ -14,24 +14,23 @@ export const TIPOS_BENEFICIO = [
 
 export type TipoBeneficio = (typeof TIPOS_BENEFICIO)[number];
 export function identificarBeneficio(texto: string): TipoBeneficio {
-  const textoNormalizado = texto.toUpperCase();
-
+    const textoNormalizado = texto
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "")
+  .toUpperCase();
   if (textoNormalizado.includes("APOSENTADORIA POR IDADE")) {
     return "APOSENTADORIA_IDADE";
   }
 
-  if (
-  textoNormalizado.includes("APOSENTADORIA POR TEMPO DE CONTRIBUICAO") ||
-  textoNormalizado.includes("APOSENTADORIA POR TEMPO DE CONTRIBUIÇÃO")
-) {
+ if (textoNormalizado.includes("APOSENTADORIA POR TEMPO DE CONTRIBUICAO")) {
   return "APOSENTADORIA_TEMPO_CONTRIBUICAO";
 }
 
 if (
-  textoNormalizado.includes("APOSENTADORIA POR INCAPACIDADE PERMANENTE") ||
-  textoNormalizado.includes("APOSENTADORIA POR INVALIDEZ")
+  textoNormalizado.includes("AUXILIO POR INCAPACIDADE TEMPORARIA") ||
+  textoNormalizado.includes("AUXILIO-DOENCA")
 ) {
-  return "APOSENTADORIA_INCAPACIDADE";
+  return "AUXILIO_INCAPACIDADE_TEMPORARIA";
 }
 
 if (
@@ -43,40 +42,31 @@ if (
   return "AUXILIO_INCAPACIDADE_TEMPORARIA";
 }
 
-if (
-  textoNormalizado.includes("AUXILIO-ACIDENTE") ||
-  textoNormalizado.includes("AUXÍLIO-ACIDENTE")
-) {
+if (textoNormalizado.includes("AUXILIO-ACIDENTE")) {
   return "AUXILIO_ACIDENTE";
 }
 
-if (textoNormalizado.includes("PENSAO POR MORTE") ||
-    textoNormalizado.includes("PENSÃO POR MORTE")) {
+if (textoNormalizado.includes("PENSAO POR MORTE")) {
   return "PENSAO_MORTE";
 }
 
 if (
   textoNormalizado.includes("SALARIO-MATERNIDADE") ||
-  textoNormalizado.includes("SALÁRIO-MATERNIDADE") ||
-  textoNormalizado.includes("SALARIO MATERNIDADE") ||
-  textoNormalizado.includes("SALÁRIO MATERNIDADE")
+  textoNormalizado.includes("SALARIO MATERNIDADE")
 ) {
   return "SALARIO_MATERNIDADE";
 }
 
 if (
   textoNormalizado.includes("BPC IDOSO") ||
-  textoNormalizado.includes("BENEFICIO ASSISTENCIAL AO IDOSO") ||
-  textoNormalizado.includes("BENEFÍCIO ASSISTENCIAL AO IDOSO")
+  textoNormalizado.includes("BENEFICIO ASSISTENCIAL AO IDOSO")
 ) {
   return "BPC_IDOSO";
 }
 
 if (
   textoNormalizado.includes("BPC DEFICIENCIA") ||
-  textoNormalizado.includes("BPC DEFICIÊNCIA") ||
-  textoNormalizado.includes("BENEFICIO ASSISTENCIAL A PESSOA COM DEFICIENCIA") ||
-  textoNormalizado.includes("BENEFÍCIO ASSISTENCIAL À PESSOA COM DEFICIÊNCIA")
+  textoNormalizado.includes("BENEFICIO ASSISTENCIAL A PESSOA COM DEFICIENCIA")
 ) {
   return "BPC_DEFICIENCIA";
 }
