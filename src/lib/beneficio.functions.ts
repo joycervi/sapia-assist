@@ -24,6 +24,12 @@ export type CorrecaoManualBeneficio = {
   corrigidoManualmente: boolean;
 };
 
+export type FeedbackIdentificacaoBeneficio = {
+  tipoIdentificado: TipoBeneficio;
+  tipoCorreto: TipoBeneficio;
+  houveErroIdentificacao: boolean;
+};
+
 export function tipoBeneficioValido(valor: string): valor is TipoBeneficio {
   return TIPOS_BENEFICIO.includes(valor as TipoBeneficio);
 }
