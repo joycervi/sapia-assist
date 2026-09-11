@@ -13,6 +13,10 @@ export const TIPOS_BENEFICIO = [
 ] as const;
 
 export type TipoBeneficio = (typeof TIPOS_BENEFICIO)[number];
+export type ResultadoIdentificacaoBeneficio = {
+  tipo: TipoBeneficio;
+  confianca: number;
+};
 export function identificarBeneficio(texto: string): TipoBeneficio {
     const textoNormalizado = texto
   .normalize("NFD")
@@ -72,4 +76,15 @@ if (
 }
 
   return "NAO_IDENTIFICADO";
+}
+
+export function identificarBeneficioComConfianca(
+  texto: string,
+): ResultadoIdentificacaoBeneficio {
+  const tipo = identificarBeneficio(texto);
+
+  return {
+    tipo,
+    confianca: tipo === "NAO_IDENTIFICADO" ? 0 : 1,
+  };
 }
