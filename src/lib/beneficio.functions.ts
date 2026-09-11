@@ -106,3 +106,31 @@ export function identificarBeneficioComConfianca(
     confianca: 0.95,
   };
 }
+
+export function corrigirBeneficio(
+  tipoOriginal: TipoBeneficio,
+  tipoCorrigido: TipoBeneficio,
+): CorrecaoManualBeneficio {
+  return {
+    tipoOriginal,
+    tipoCorrigido,
+    corrigidoManualmente: tipoOriginal !== tipoCorrigido,
+  };
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
