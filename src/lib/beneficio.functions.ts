@@ -17,6 +17,11 @@ export type ResultadoIdentificacaoBeneficio = {
   tipo: TipoBeneficio;
   confianca: number;
 };
+
+export function tipoBeneficioValido(valor: string): valor is TipoBeneficio {
+  return TIPOS_BENEFICIO.includes(valor as TipoBeneficio);
+}
+
 export function identificarBeneficio(texto: string): TipoBeneficio {
     const textoNormalizado = texto
   .normalize("NFD")
