@@ -18,6 +18,12 @@ export type ResultadoIdentificacaoBeneficio = {
   confianca: number;
 };
 
+export type CorrecaoManualBeneficio = {
+  tipoOriginal: TipoBeneficio;
+  tipoCorrigido: TipoBeneficio;
+  corrigidoManualmente: boolean;
+};
+
 export function tipoBeneficioValido(valor: string): valor is TipoBeneficio {
   return TIPOS_BENEFICIO.includes(valor as TipoBeneficio);
 }
