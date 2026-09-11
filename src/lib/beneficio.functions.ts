@@ -83,8 +83,15 @@ export function identificarBeneficioComConfianca(
 ): ResultadoIdentificacaoBeneficio {
   const tipo = identificarBeneficio(texto);
 
+  if (tipo === "NAO_IDENTIFICADO") {
+    return {
+      tipo,
+      confianca: 0,
+    };
+  }
+
   return {
     tipo,
-    confianca: tipo === "NAO_IDENTIFICADO" ? 0 : 1,
+    confianca: 0.95,
   };
 }
