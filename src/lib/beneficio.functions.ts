@@ -177,7 +177,15 @@ export const salvarBeneficioIdentificado = createServerFn({ method: "POST" })
   };
 });
 
-
+export const salvarCorrecaoManualBeneficio = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => corrigirBeneficioInput.parse(data))
+  .handler(async ({ data }) => {
+    return {
+      sucesso: true,
+      dados: data,
+    };
+  });
+  
 
 
 
