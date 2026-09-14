@@ -124,7 +124,16 @@ export function corrigirBeneficio(
   };
 }
 
-
+export function gerarFeedbackIdentificacao(
+  tipoIdentificado: TipoBeneficio,
+  tipoCorreto: TipoBeneficio,
+): FeedbackIdentificacaoBeneficio {
+  return {
+    tipoIdentificado,
+    tipoCorreto,
+    houveErroIdentificacao: tipoIdentificado !== tipoCorreto,
+  };
+}
 
 
 
