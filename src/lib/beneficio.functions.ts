@@ -1,3 +1,12 @@
+import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
+
+const salvarBeneficioInput = z.object({
+  id_documento_inss: z.number(),
+  beneficio_identificado: z.string(),
+  nivel_confianca: z.number(),
+});
+
 export const TIPOS_BENEFICIO = [
   "APOSENTADORIA_IDADE",
   "APOSENTADORIA_TEMPO_CONTRIBUICAO",
@@ -136,7 +145,14 @@ export function gerarFeedbackIdentificacao(
 }
 
 
-
+export const salvarBeneficioIdentificado = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => salvarBeneficioInput.parse(data))
+  .handler(async ({ data }) => {
+    return {
+      sucesso: true,
+      dados: data,
+    };
+  });
 
 
 
