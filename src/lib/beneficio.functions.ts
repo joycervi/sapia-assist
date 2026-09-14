@@ -48,10 +48,10 @@ export function identificarBeneficio(texto: string): TipoBeneficio {
 }
 
 if (
-  textoNormalizado.includes("AUXILIO POR INCAPACIDADE TEMPORARIA") ||
-  textoNormalizado.includes("AUXILIO-DOENCA")
+  textoNormalizado.includes("APOSENTADORIA POR INCAPACIDADE PERMANENTE") ||
+  textoNormalizado.includes("APOSENTADORIA POR INVALIDEZ")
 ) {
-  return "AUXILIO_INCAPACIDADE_TEMPORARIA";
+  return "APOSENTADORIA_INCAPACIDADE";
 }
 
 if (
