@@ -180,12 +180,27 @@ export const salvarBeneficioIdentificado = createServerFn({ method: "POST" })
 export const salvarCorrecaoManualBeneficio = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => corrigirBeneficioInput.parse(data))
   .handler(async ({ data }) => {
-    return {
-      sucesso: true,
-      dados: data,
-    };
-  });
-  
+  const { supabaseAdmin } = await import(
+    "@/integrations/supabase/client.server"
+  );
+
+  const { error } = await supabaseAdmin
+  .from("dados_extraidos")
+  .update({
+    beneficio_identificado: data.tipo_corrigido,
+  })
+  .eq("id_dados_extraidos", data.id_dados_extraidos);
+
+  if (error) {
+  throw new Error(`Erro ao corrigir benefício identificado: ${error.message}`);
+}
+
+  return {
+    sucesso: true,
+    dados: data,
+  };
+});
+
 
 
 
