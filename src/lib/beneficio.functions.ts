@@ -7,6 +7,12 @@ const salvarBeneficioInput = z.object({
   nivel_confianca: z.number(),
 });
 
+const corrigirBeneficioInput = z.object({
+  id_dados_extraidos: z.number(),
+  tipo_original: z.string(),
+  tipo_corrigido: z.string(),
+});
+
 export const TIPOS_BENEFICIO = [
   "APOSENTADORIA_IDADE",
   "APOSENTADORIA_TEMPO_CONTRIBUICAO",
