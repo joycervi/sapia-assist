@@ -148,11 +148,30 @@ export function gerarFeedbackIdentificacao(
 export const salvarBeneficioIdentificado = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => salvarBeneficioInput.parse(data))
   .handler(async ({ data }) => {
-    return {
-      sucesso: true,
-      dados: data,
-    };
+  const { supabaseAdmin } = await import(
+    "@/integrations/supabase/client.server"
+  );
+
+  const { error } = await supabaseAdmin
+  .from("dados_extraidos")
+  .insert({
+    id_documento_inss: data.id_documento_inss,
+    beneficio_identificado: data.beneficio_identificado,
+    nivel_confianca: data.nivel_confianca,
+    data_analise_ia: new Date().toISOString(),
   });
+
+  if (error) {
+  throw new Error(`Erro ao salvar benefício identificado: ${error.message}`);
+}
+
+  return {
+    sucesso: true,
+    dados: data,
+  };
+});
+
+
 
 
 
