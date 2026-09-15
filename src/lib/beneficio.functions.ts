@@ -71,9 +71,7 @@ if (
 
 if (
   textoNormalizado.includes("AUXILIO POR INCAPACIDADE TEMPORARIA") ||
-  textoNormalizado.includes("AUXÍLIO POR INCAPACIDADE TEMPORÁRIA") ||
-  textoNormalizado.includes("AUXILIO-DOENCA") ||
-  textoNormalizado.includes("AUXÍLIO-DOENÇA")
+  textoNormalizado.includes("AUXILIO-DOENCA")
 ) {
   return "AUXILIO_INCAPACIDADE_TEMPORARIA";
 }
@@ -168,7 +166,7 @@ export const salvarBeneficioIdentificado = createServerFn({ method: "POST" })
   });
 
   if (error) {
-  throw new Error(`Erro ao salvar benefício identificado: ${error.message}`);
+  throw new Error(`Erro ao salvar beneficio identificado: ${error.message}`);
 }
 
   return {
@@ -192,7 +190,7 @@ export const salvarCorrecaoManualBeneficio = createServerFn({ method: "POST" })
   .eq("id_dados_extraidos", data.id_dados_extraidos);
 
   if (error) {
-  throw new Error(`Erro ao corrigir benefício identificado: ${error.message}`);
+  throw new Error(`Erro ao corrigir beneficio identificado: ${error.message}`);
 }
 
   return {
