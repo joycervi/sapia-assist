@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { TIPOS_BENEFICIO } from "@/lib/beneficio.functions";
+import {
+  TIPOS_BENEFICIO,
+  salvarCorrecaoManualBeneficio,
+} from "@/lib/beneficio.functions";
 import { Button } from "@/components/ui/button";
 
 
@@ -13,14 +16,26 @@ import {
 } from "@/components/ui/select";
 
 type BeneficioIdentificadoProps = {
+  idDadosExtraidos: number;
   beneficio: string;
 };
 
 export function BeneficioIdentificado({
+  idDadosExtraidos,
   beneficio,
 }: BeneficioIdentificadoProps) {
 
     const [beneficioSelecionado, setBeneficioSelecionado] = useState(beneficio);
+
+    const salvarCorrecao = async () => {
+  await salvarCorrecaoManualBeneficio({
+    data: {
+      id_dados_extraidos: idDadosExtraidos,
+      tipo_original: beneficio,
+      tipo_corrigido: beneficioSelecionado,
+    },
+  });
+};
 
   return (
     <div>
@@ -42,7 +57,10 @@ export function BeneficioIdentificado({
     ))}
   </SelectContent>
 </Select>
-<Button disabled={beneficioSelecionado === beneficio}>
+<Button
+  onClick={salvarCorrecao}
+  disabled={beneficioSelecionado === beneficio}
+>
   Salvar correcao
 </Button>
     </div>
