@@ -1,4 +1,8 @@
+import { useState } from "react";
 import { TIPOS_BENEFICIO } from "@/lib/beneficio.functions";
+import { Button } from "@/components/ui/button";
+
+
 
 import {
   Select,
@@ -15,11 +19,17 @@ type BeneficioIdentificadoProps = {
 export function BeneficioIdentificado({
   beneficio,
 }: BeneficioIdentificadoProps) {
+
+    const [beneficioSelecionado, setBeneficioSelecionado] = useState(beneficio);
+
   return (
     <div>
       <p>Beneficio identificado:</p>
       <strong>{beneficio}</strong>
-      <Select defaultValue={beneficio}>
+      <Select
+  value={beneficioSelecionado}
+  onValueChange={setBeneficioSelecionado}
+>
   <SelectTrigger>
     <SelectValue placeholder="Selecione o beneficio" />
   </SelectTrigger>
@@ -32,6 +42,9 @@ export function BeneficioIdentificado({
     ))}
   </SelectContent>
 </Select>
+<Button disabled={beneficioSelecionado === beneficio}>
+  Salvar correcao
+</Button>
     </div>
   );
 }
