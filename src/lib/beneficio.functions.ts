@@ -1,19 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-const salvarBeneficioInput = z.object({
-  id_documento_inss: z.number(),
-  beneficio_identificado: z.string(),
-  nivel_confianca: z.number(),
-});
-
-const corrigirBeneficioInput = z.object({
-  id_dados_extraidos: z.number(),
-  tipo_original: z.string(),
-  tipo_corrigido: z.string(),
-});
-
-export const TIPOS_BENEFICIO = [
+const TIPOS_BENEFICIO_VALIDOS = [
   "APOSENTADORIA_IDADE",
   "APOSENTADORIA_TEMPO_CONTRIBUICAO",
   "APOSENTADORIA_INCAPACIDADE",
@@ -26,6 +14,23 @@ export const TIPOS_BENEFICIO = [
   "OUTRO",
   "NAO_IDENTIFICADO",
 ] as const;
+
+const tipoBeneficioSchema = z.enum(TIPOS_BENEFICIO_VALIDOS);
+
+const salvarBeneficioInput = z.object({
+  id_documento_inss: z.number(),
+  beneficio_identificado: tipoBeneficioSchema,
+  nivel_confianca: z.number(),
+});
+
+const corrigirBeneficioInput = z.object({
+  id_dados_extraidos: z.number(),
+  tipo_original: tipoBeneficioSchema,
+  tipo_corrigido: tipoBeneficioSchema,
+});
+
+export const TIPOS_BENEFICIO = TIPOS_BENEFICIO_VALIDOS;
+
 
 export type TipoBeneficio = (typeof TIPOS_BENEFICIO)[number];
 export type ResultadoIdentificacaoBeneficio = {
