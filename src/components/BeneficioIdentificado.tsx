@@ -29,6 +29,8 @@ export function BeneficioIdentificado({
 
     const [salvando, setSalvando] = useState(false);
 
+    const [mensagem, setMensagem] = useState("");
+
     const salvarCorrecao = async () => {
       setSalvando(true);
       try {
@@ -39,6 +41,12 @@ export function BeneficioIdentificado({
       tipo_corrigido: beneficioSelecionado,
     },
   });
+
+  setMensagem("Beneficio corrigido com sucesso.");
+
+  } catch {
+  setMensagem("Erro ao corrigir beneficio.");
+
   } finally {
   setSalvando(false);
 }
@@ -70,6 +78,7 @@ export function BeneficioIdentificado({
 >
   {salvando ? "Salvando..." : "Salvar correcao"}
 </Button>
+{mensagem && <p>{mensagem}</p>}
     </div>
   );
 }
