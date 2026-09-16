@@ -27,7 +27,11 @@ export function BeneficioIdentificado({
 
     const [beneficioSelecionado, setBeneficioSelecionado] = useState(beneficio);
 
+    const [salvando, setSalvando] = useState(false);
+
     const salvarCorrecao = async () => {
+      setSalvando(true);
+      try {
   await salvarCorrecaoManualBeneficio({
     data: {
       id_dados_extraidos: idDadosExtraidos,
@@ -35,6 +39,9 @@ export function BeneficioIdentificado({
       tipo_corrigido: beneficioSelecionado,
     },
   });
+  } finally {
+  setSalvando(false);
+}
 };
 
   return (
@@ -59,9 +66,9 @@ export function BeneficioIdentificado({
 </Select>
 <Button
   onClick={salvarCorrecao}
-  disabled={beneficioSelecionado === beneficio}
+  disabled={beneficioSelecionado === beneficio || salvando}
 >
-  Salvar correcao
+  {salvando ? "Salvando..." : "Salvar correcao"}
 </Button>
     </div>
   );
