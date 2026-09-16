@@ -50,60 +50,60 @@ export function tipoBeneficioValido(valor: string): valor is TipoBeneficio {
 }
 
 export function identificarBeneficio(texto: string): TipoBeneficio {
-    const textoNormalizado = texto
-  .normalize("NFD")
-  .replace(/[\u0300-\u036f]/g, "")
-  .toUpperCase();
+  const textoNormalizado = texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toUpperCase();
   if (textoNormalizado.includes("APOSENTADORIA POR IDADE")) {
     return "APOSENTADORIA_IDADE";
   }
 
- if (textoNormalizado.includes("APOSENTADORIA POR TEMPO DE CONTRIBUICAO")) {
-  return "APOSENTADORIA_TEMPO_CONTRIBUICAO";
-}
+  if (textoNormalizado.includes("APOSENTADORIA POR TEMPO DE CONTRIBUICAO")) {
+    return "APOSENTADORIA_TEMPO_CONTRIBUICAO";
+  }
 
-if (
-  textoNormalizado.includes("APOSENTADORIA POR INCAPACIDADE PERMANENTE") ||
-  textoNormalizado.includes("APOSENTADORIA POR INVALIDEZ")
-) {
-  return "APOSENTADORIA_INCAPACIDADE";
-}
+  if (
+    textoNormalizado.includes("APOSENTADORIA POR INCAPACIDADE PERMANENTE") ||
+    textoNormalizado.includes("APOSENTADORIA POR INVALIDEZ")
+  ) {
+    return "APOSENTADORIA_INCAPACIDADE";
+  }
 
-if (
-  textoNormalizado.includes("AUXILIO POR INCAPACIDADE TEMPORARIA") ||
-  textoNormalizado.includes("AUXILIO-DOENCA")
-) {
-  return "AUXILIO_INCAPACIDADE_TEMPORARIA";
-}
+  if (
+    textoNormalizado.includes("AUXILIO POR INCAPACIDADE TEMPORARIA") ||
+    textoNormalizado.includes("AUXILIO-DOENCA")
+  ) {
+    return "AUXILIO_INCAPACIDADE_TEMPORARIA";
+  }
 
-if (textoNormalizado.includes("AUXILIO-ACIDENTE")) {
-  return "AUXILIO_ACIDENTE";
-}
+  if (textoNormalizado.includes("AUXILIO-ACIDENTE")) {
+    return "AUXILIO_ACIDENTE";
+  }
 
-if (textoNormalizado.includes("PENSAO POR MORTE")) {
-  return "PENSAO_MORTE";
-}
+  if (textoNormalizado.includes("PENSAO POR MORTE")) {
+    return "PENSAO_MORTE";
+  }
 
-if (
-  textoNormalizado.includes("SALARIO-MATERNIDADE") ||
-  textoNormalizado.includes("SALARIO MATERNIDADE")
-) {
-  return "SALARIO_MATERNIDADE";
-}
+  if (
+    textoNormalizado.includes("SALARIO-MATERNIDADE") ||
+    textoNormalizado.includes("SALARIO MATERNIDADE")
+  ) {
+    return "SALARIO_MATERNIDADE";
+  }
 
-if (
-  textoNormalizado.includes("BPC IDOSO") ||
-  textoNormalizado.includes("BENEFICIO ASSISTENCIAL AO IDOSO")
-) {
-  return "BPC_IDOSO";
-}
+  if (
+    textoNormalizado.includes("BPC IDOSO") ||
+    textoNormalizado.includes("BENEFICIO ASSISTENCIAL AO IDOSO")
+  ) {
+    return "BPC_IDOSO";
+  }
 
-if (
-  textoNormalizado.includes("BPC DEFICIENCIA") ||
-  textoNormalizado.includes("BENEFICIO ASSISTENCIAL A PESSOA COM DEFICIENCIA")
-) {
-  return "BPC_DEFICIENCIA";
-}
+  if (
+    textoNormalizado.includes("BPC DEFICIENCIA") ||
+    textoNormalizado.includes("BENEFICIO ASSISTENCIAL A PESSOA COM DEFICIENCIA")
+  ) {
+    return "BPC_DEFICIENCIA";
+  }
 
   return "NAO_IDENTIFICADO";
 }
@@ -152,52 +152,52 @@ export function gerarFeedbackIdentificacao(
 export const salvarBeneficioIdentificado = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => salvarBeneficioInput.parse(data))
   .handler(async ({ data }) => {
-  const { supabaseAdmin } = await import(
-    "@/integrations/supabase/client.server"
-  );
+    const { supabaseAdmin } = await import(
+      "@/integrations/supabase/client.server"
+    );
 
-  const { error } = await supabaseAdmin
-  .from("dados_extraidos")
-  .insert({
-    id_documento_inss: data.id_documento_inss,
-    beneficio_identificado: data.beneficio_identificado,
-    nivel_confianca: data.nivel_confianca,
-    data_analise_ia: new Date().toISOString(),
+    const { error } = await supabaseAdmin
+      .from("dados_extraidos")
+      .insert({
+        id_documento_inss: data.id_documento_inss,
+        beneficio_identificado: data.beneficio_identificado,
+        nivel_confianca: data.nivel_confianca,
+        data_analise_ia: new Date().toISOString(),
+      });
+
+    if (error) {
+      throw new Error(`Erro ao salvar beneficio identificado: ${error.message}`);
+    }
+
+    return {
+      sucesso: true,
+      dados: data,
+    };
   });
-
-  if (error) {
-  throw new Error(`Erro ao salvar beneficio identificado: ${error.message}`);
-}
-
-  return {
-    sucesso: true,
-    dados: data,
-  };
-});
 
 export const salvarCorrecaoManualBeneficio = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => corrigirBeneficioInput.parse(data))
   .handler(async ({ data }) => {
-  const { supabaseAdmin } = await import(
-    "@/integrations/supabase/client.server"
-  );
+    const { supabaseAdmin } = await import(
+      "@/integrations/supabase/client.server"
+    );
 
-  const { error } = await supabaseAdmin
-  .from("dados_extraidos")
-  .update({
-    beneficio_identificado: data.tipo_corrigido,
-  })
-  .eq("id_dados_extraidos", data.id_dados_extraidos);
+    const { error } = await supabaseAdmin
+      .from("dados_extraidos")
+      .update({
+        beneficio_identificado: data.tipo_corrigido,
+      })
+      .eq("id_dados_extraidos", data.id_dados_extraidos);
 
-  if (error) {
-  throw new Error(`Erro ao corrigir beneficio identificado: ${error.message}`);
-}
+    if (error) {
+      throw new Error(`Erro ao corrigir beneficio identificado: ${error.message}`);
+    }
 
-  return {
-    sucesso: true,
-    dados: data,
-  };
-});
+    return {
+      sucesso: true,
+      dados: data,
+    };
+  });
 
 
 
