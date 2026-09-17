@@ -17,6 +17,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
 import { Route as AuthenticatedEnviarArquivosRouteImport } from './routes/_authenticated/enviar-arquivos'
 import { Route as AuthenticatedHistoricoRouteImport } from './routes/_authenticated/historico'
+import { Route as AuthenticatedTesteRf5RouteImport } from './routes/_authenticated/teste-rf5'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,6 +59,11 @@ const AuthenticatedHistoricoRoute = AuthenticatedHistoricoRouteImport.update({
   path: '/historico',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedTesteRf5Route = AuthenticatedTesteRf5RouteImport.update({
+  id: '/teste-rf5',
+  path: '/teste-rf5',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/enviar-arquivos': typeof AuthenticatedEnviarArquivosRoute
   '/historico': typeof AuthenticatedHistoricoRoute
+  '/teste-rf5': typeof AuthenticatedTesteRf5Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/enviar-arquivos': typeof AuthenticatedEnviarArquivosRoute
   '/historico': typeof AuthenticatedHistoricoRoute
+  '/teste-rf5': typeof AuthenticatedTesteRf5Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/_authenticated/enviar-arquivos': typeof AuthenticatedEnviarArquivosRoute
   '/_authenticated/historico': typeof AuthenticatedHistoricoRoute
+  '/_authenticated/teste-rf5': typeof AuthenticatedTesteRf5Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/redefinir-senha'
     | '/enviar-arquivos'
     | '/historico'
+    | '/teste-rf5'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/redefinir-senha'
     | '/enviar-arquivos'
     | '/historico'
+    | '/teste-rf5'
   id:
     | '__root__'
     | '/'
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/redefinir-senha'
     | '/_authenticated/enviar-arquivos'
     | '/_authenticated/historico'
+    | '/_authenticated/teste-rf5'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -186,17 +198,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHistoricoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/teste-rf5': {
+      id: '/_authenticated/teste-rf5'
+      path: '/teste-rf5'
+      fullPath: '/teste-rf5'
+      preLoaderRoute: typeof AuthenticatedTesteRf5RouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedEnviarArquivosRoute: typeof AuthenticatedEnviarArquivosRoute
   AuthenticatedHistoricoRoute: typeof AuthenticatedHistoricoRoute
+  AuthenticatedTesteRf5Route: typeof AuthenticatedTesteRf5Route
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedEnviarArquivosRoute: AuthenticatedEnviarArquivosRoute,
   AuthenticatedHistoricoRoute: AuthenticatedHistoricoRoute,
+  AuthenticatedTesteRf5Route: AuthenticatedTesteRf5Route,
 }
 
 const AuthenticatedRouteRouteWithChildren =
