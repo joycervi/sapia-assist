@@ -38,6 +38,12 @@ export type ResultadoIdentificacaoBeneficio = {
   confianca: number;
 };
 
+export type ResultadoRF4 = {
+  extracted_text: string;
+  page_count?: number;
+  pages_without_text?: number[];
+};
+
 export type CorrecaoManualBeneficio = {
   tipoOriginal: TipoBeneficio;
   tipoCorrigido: TipoBeneficio;
@@ -129,6 +135,12 @@ export function identificarBeneficioComConfianca(
     tipo,
     confianca: 0.95,
   };
+}
+
+export function identificarBeneficioDoRF4(
+  resultadoRF4: ResultadoRF4,
+): ResultadoIdentificacaoBeneficio {
+  return identificarBeneficioComConfianca(resultadoRF4.extracted_text);
 }
 
 export function corrigirBeneficio(
