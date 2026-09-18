@@ -1,11 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BeneficioIdentificado } from "@/components/BeneficioIdentificado";
+import { identificarBeneficioDoRF4 } from "@/lib/beneficio.functions";
 
 export const Route = createFileRoute("/_authenticated/teste-rf5")({
   component: TesteRF5,
 });
 
 function TesteRF5() {
+    const resultadoRF4 = {
+    extracted_text:
+      "INSTITUTO NACIONAL DO SEGURO SOCIAL. BENEFICIO: APOSENTADORIA POR IDADE.",
+    page_count: 2,
+    pages_without_text: [],
+  };
+
+  const resultadoRF5 = identificarBeneficioDoRF4(resultadoRF4);
   return (
     <div className="container mx-auto max-w-3xl px-4 py-8">
       <div className="mb-6">
@@ -19,9 +28,9 @@ function TesteRF5() {
 
       <div className="rounded-lg border bg-card p-6 shadow-sm">
         <BeneficioIdentificado
-          idDadosExtraidos={1}
-          beneficio="APOSENTADORIA_IDADE"
-        />
+  idDadosExtraidos={1}
+  beneficio={resultadoRF5.tipo}
+/>
       </div>
 
       <div className="mt-6 rounded-lg border p-4">
